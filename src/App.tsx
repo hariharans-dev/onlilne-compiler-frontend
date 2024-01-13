@@ -1,24 +1,95 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, ChangeEvent } from "react";
+import "./App.css";
+import request from "./Request";
 
 function App() {
+  const [code, setCode] = useState<string>("");
+  const [input, setInput] = useState<string>("");
+  const [output, setOutput] = useState<string>("");
+
+  const handleCodeChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setCode(event.target.value);
+  };
+
+  const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(event.target.value);
+  };
+
+  const handleTabKeyPress = (
+    event: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      const { selectionStart, selectionEnd } = event.currentTarget;
+      const newCode =
+        code.substring(0, selectionStart) + "\t" + code.substring(selectionEnd);
+      const newCursorPos = selectionStart + 1;
+      setCode(newCode);
+      setTimeout(() => {
+        if (event.currentTarget) {
+          event.currentTarget.setSelectionRange(newCursorPos, newCursorPos);
+        }
+      }, 0);
+    }
+  };
+
+  const errorFunction = () => {
+    setOutput("Internal server error");
+  };
+
+  const runCode = async () => {
+    if (code === "") {
+      setOutput("");
+    } else {
+      try {
+        const data = { code, input };
+        const url = process.env.REACT_APP_API_PYTHON + "";
+        const headers = {
+          "Content-Type": "application/json",
+        };
+        const response = await request(url, data, headers, errorFunction);
+
+        setOutput(response.data.output);
+      } catch (error) {
+        setOutput("Error occurred during code execution");
+      }
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="body">
+      <header>
+        <h1>Online Compiler</h1>
       </header>
+
+      <main>
+        <textarea
+          className="codeEditor"
+          placeholder="Enter your code here..."
+          value={code}
+          onChange={handleCodeChange}
+          onKeyDown={handleTabKeyPress}
+        ></textarea>
+        <textarea
+          className="input"
+          placeholder="Enter input here..."
+          value={input}
+          onChange={handleInputChange}
+          onKeyDown={handleTabKeyPress}
+        ></textarea>
+        <div className="output">
+          {output.split("\r\n").map((line, index) => (
+            <React.Fragment key={index}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
+        </div>
+      </main>
+
+      <button className="compile" onClick={runCode}>
+        Run Code
+      </button>
     </div>
   );
 }

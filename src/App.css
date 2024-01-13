@@ -1,38 +1,49 @@
-.App {
+.body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.output {
+  margin-top: 0; /* Remove top margin */
+  padding: 10px; /* Add padding for better visual appearance */
+  white-space: pre-wrap; /* Preserve line breaks */
+  font-family: monospace; /* Use a monospaced font for code-like output */
+}
+
+/* Add any other styles as needed */
+
+header {
+  background-color: #333;
+  color: #fff;
   text-align: center;
+  padding: 1em;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+main {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 2em;
 }
 
-.App-link {
-  color: #61dafb;
+.codeEditor,
+.input,
+.output {
+  width: 60%; /* Adjust the width as needed */
+  height: 300px; /* Adjust the height as needed */
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+  resize: none; /* Prevent users from resizing the textarea */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.compile {
+  display: block;
+  margin: 20px auto;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
 }
