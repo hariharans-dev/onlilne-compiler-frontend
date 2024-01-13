@@ -6,6 +6,7 @@ function App() {
   const [code, setCode] = useState<string>("");
   const [input, setInput] = useState<string>("");
   const [output, setOutput] = useState<string>("");
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("python");
 
   const handleCodeChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setCode(event.target.value);
@@ -37,13 +38,20 @@ function App() {
     setOutput("Internal server error");
   };
 
+  const language_route = () => {
+    if (selectedLanguage === "python") {
+      return process.env.REACT_APP_API_PYTHON;
+    }
+  };
+
   const runCode = async () => {
     if (code === "") {
       setOutput("");
     } else {
       try {
         const data = { code, input };
-        const url = process.env.REACT_APP_API_PYTHON + "";
+        const url = language_route() + "";
+        console.log(url);
         const headers = {
           "Content-Type": "application/json",
         };
@@ -61,7 +69,15 @@ function App() {
       <header>
         <h1>Online Compiler</h1>
       </header>
-
+      <label className="language">
+        Select Language:
+        <select
+          value={selectedLanguage}
+          onChange={(e) => setSelectedLanguage(e.target.value)}
+        >
+          <option value="python">Python</option>
+        </select>
+      </label>
       <main>
         <textarea
           className="codeEditor"

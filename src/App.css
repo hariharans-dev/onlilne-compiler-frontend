@@ -12,6 +12,13 @@
   font-family: monospace; /* Use a monospaced font for code-like output */
 }
 
+.language {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
 /* Add any other styles as needed */
 
 header {
