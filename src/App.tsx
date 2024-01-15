@@ -56,7 +56,7 @@ function App() {
           "Content-Type": "application/json",
         };
         const response = await request(url, data, headers, errorFunction);
-
+        console.log(response.data);
         setOutput(response.data.output);
       } catch (error) {
         setOutput("Error occurred during code execution");
@@ -93,14 +93,7 @@ function App() {
           onChange={handleInputChange}
           onKeyDown={handleTabKeyPress}
         ></textarea>
-        <div className="output">
-          {output.split("\r\n").map((line, index) => (
-            <React.Fragment key={index}>
-              {line}
-              <br />
-            </React.Fragment>
-          ))}
-        </div>
+        <div className="output">{output}</div>
       </main>
 
       <button className="compile" onClick={runCode}>
