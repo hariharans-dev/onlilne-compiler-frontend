@@ -20,17 +20,21 @@ function App() {
     event: React.KeyboardEvent<HTMLTextAreaElement>
   ) => {
     if (event.key === "Tab") {
-      event.preventDefault();
-      const { selectionStart, selectionEnd } = event.currentTarget;
-      const newCode =
-        code.substring(0, selectionStart) + "\t" + code.substring(selectionEnd);
-      const newCursorPos = selectionStart + 1;
-      setCode(newCode);
-      setTimeout(() => {
-        if (event.currentTarget) {
-          event.currentTarget.setSelectionRange(newCursorPos, newCursorPos);
-        }
-      }, 0);
+      if (event.key === "Tab") {
+        event.preventDefault();
+        const { selectionStart, selectionEnd } = event.currentTarget;
+        const newCode =
+          code.substring(0, selectionStart) +
+          "\t" +
+          code.substring(selectionEnd);
+        const newCursorPos = selectionStart + 1;
+        setCode(newCode);
+        setTimeout(() => {
+          if (event.currentTarget) {
+            event.currentTarget.setSelectionRange(newCursorPos, newCursorPos);
+          }
+        }, 0);
+      }
     }
   };
 
